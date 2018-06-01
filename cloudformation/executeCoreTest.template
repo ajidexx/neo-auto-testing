@@ -1,0 +1,125 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "Template spins up an EC2 and creates a micro Neo environment using prebuilt containers to test against",
+  "Mappings": {},
+  "Parameters": {
+    "coreVer": {
+      "Description": "Core version to test against",
+      "Type": "String"
+    },
+    "adminVer": {
+      "Description": "Admin version to test against",
+      "Type": "String"
+    },
+    "testMode": {
+      "Description": "",
+      "Type": "String"
+    },
+    "browser": {
+      "Description": "",
+      "Type": "String"
+    },
+    "suite": {
+      "Description": "",
+      "Type": "String"
+    },
+    "testPlanid": {
+      "Description": "",
+      "Type": "String"
+    },
+    "costCenter": {
+      "Default": "W235",
+      "Type": "String"
+    },
+    "purpose": {
+      "Default": "neo",
+      "Type": "String"
+    }
+  },
+  "Resources" : {
+    "securityGroup": {
+      "Type" : "AWS::EC2::SecurityGroup",
+      "Properties" : {
+        "GroupName" : "qa-auto-testing",
+        "GroupDescription" : "SG allowing SSH ingress to testing instance",
+        "SecurityGroupIngress" : {
+          "CidrIp": "172.0.0.0/6",
+          "FromPort": "22",
+          "ToPort": "22",
+          "IpProtocol": "tcp"
+          },
+        "Tags" : [
+          {
+            "Key": "Cost Center",
+            "Value": { "Ref": "costCenter" }
+          },
+          {
+            "Key": "Purpose",
+            "Value": { "Ref": "purpose" }
+          }
+        ]
+      }
+    },
+    "instanceRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version" : "2012-10-17",
+          "Statement": [ {
+            "Effect": "Allow",
+            "Principal": {
+              "Service": [ "ec2.amazonaws.com" ]
+            },
+            "Action": [ "sts:AssumeRole" ]
+          } ]
+        },
+        "ManagedPolicyArns": [ "arn:aws:iam::aws:policy/AdministratorAccess" ],
+        "Path": "/",
+        "RoleName": "neo-auto-testing-role"
+      }
+    },
+    "ec2Instance": {
+      "Type" : "AWS::EC2::Instance",
+      "Properties" : {
+        "BlockDeviceMappings" : [
+          {
+            "DeviceName" : "/dev/xvda",
+            "Ebs" : {
+              "VolumeSize" : "30",
+              "VolumeType" : "gp2"
+            }
+          }
+        ],
+        "CreditSpecification" : CreditSpecification,
+        "IamInstanceProfile" : String,
+        "ImageId" : "ami-fb32279b",
+        "InstanceInitiatedShutdownBehavior" : String,
+        "InstanceType" : "t2.medium",
+        "KeyName" : "DevopsNeo",
+        "LaunchTemplate" : Amazon EC2  Instance LaunchTemplateSpecification,
+        "Monitoring" : Boolean,
+        "NetworkInterfaces" : [ EC2 Network Interface, ... ],
+        "PlacementGroupName" : String,
+        "PrivateIpAddress" : String,
+        "RamdiskId" : String,
+        "SecurityGroupIds" : { "Ref": "securityGroup"},
+
+        "SourceDestCheck" : Boolean,
+        "SsmAssociations" : [ SSMAssociation, ... ],
+        "SubnetId" : String,
+        "Tags" : [
+          {
+            "Key": "Cost Center",
+            "Value": { "Ref": "costCenter" }
+          },
+          {
+            "Key": "Purpose",
+            "Value": { "Ref": "purpose" }
+          }
+        ],
+        "UserData" : String
+      }
+    }
+  }
+}
