@@ -2,7 +2,6 @@
   "AWSTemplateFormatVersion" : "2010-09-09",
 
   "Description" : "Template spins up an EC2 and creates a micro Neo environment using prebuilt containers to test against",
-  "Mappings": {},
   "Parameters": {
     "coreVer": {
       "Description": "Core version to test against",
@@ -75,9 +74,16 @@
           } ]
         },
         "ManagedPolicyArns": [ "arn:aws:iam::aws:policy/AdministratorAccess" ],
-        "Path": "/",
         "RoleName": "neo-auto-testing-role"
       }
+    },
+    "instanceProfile": {
+      "Type": "AWS::IAM::InstanceProfile",
+      "Properties": {
+        "Path": "/",
+        "Roles": [ { "Ref": "instanceRole" } ]
+      },
+      "DependsOn": "instanceRole"
     },
     "ec2Instance": {
       "Type" : "AWS::EC2::Instance",
@@ -91,23 +97,15 @@
             }
           }
         ],
-        "CreditSpecification" : CreditSpecification,
-        "IamInstanceProfile" : String,
+        "CreditSpecification" : {
+          "CPUCredits" : "unlimited"
+        },
+        "IamInstanceProfile" : { "Ref": "instanceProfile"},
         "ImageId" : "ami-fb32279b",
-        "InstanceInitiatedShutdownBehavior" : String,
         "InstanceType" : "t2.medium",
         "KeyName" : "DevopsNeo",
-        "LaunchTemplate" : Amazon EC2  Instance LaunchTemplateSpecification,
-        "Monitoring" : Boolean,
-        "NetworkInterfaces" : [ EC2 Network Interface, ... ],
-        "PlacementGroupName" : String,
-        "PrivateIpAddress" : String,
-        "RamdiskId" : String,
-        "SecurityGroupIds" : { "Ref": "securityGroup"},
-
-        "SourceDestCheck" : Boolean,
-        "SsmAssociations" : [ SSMAssociation, ... ],
-        "SubnetId" : String,
+        "SecurityGroupIds" : [ { "Fn::GetAtt": [ "securityGroup", "GroupId" ] } ],
+        "SubnetId" : "subnet-2e42ba76",
         "Tags" : [
           {
             "Key": "Cost Center",
@@ -118,7 +116,25 @@
             "Value": { "Ref": "purpose" }
           }
         ],
-        "UserData" : String
+        "UserData" : {
+          "Fn::Base64": {
+            "Fn::Join": [
+              "",
+              [
+                "#!/bin/bash -xe\n",
+
+                "export coreVer=", { "Ref": "coreVer" }, "\n",
+                "export adminVer=", { "Ref": "adminVer" }, "\n",
+                "export testMode=", { "Ref": "testMode" }, "\n",
+                "export browser=", { "Ref": "browser" }, "\n",
+                "export suite=", { "Ref": "suite" }, "\n",
+                "export testPlanid=", { "Ref": "testPlanid" }, "\n",
+
+                "aws s3api get-object --bucket idexxneo-devops-us-east-1 --key automation-testing/executeCoreTests.sh --region us-east-1 executeCoreTests.sh ${coreVer} ${adminVer} ${testMode} ${browser} ${suite} ${testPlanid}\n"
+              ]
+            ]
+          }
+        }
       }
     }
   }
