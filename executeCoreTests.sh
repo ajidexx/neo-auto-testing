@@ -54,11 +54,10 @@ IdentityFile /root/qa-auto-reporting
 EOF
 
 # clone neo repos
-apt-get install git docker.io -y
+apt-get install git docker.io daemon -y
 ssh-keyscan -H github.com >> ~/.ssh/known_hosts
 
-git clone git@neo-local:IDEXX/neo-local.git
-ln -s /root/neo-local /vagrant
+git clone git@neo-local:IDEXX/neo-local.git /vagrant
 git clone git@admin:IDEXX/saas-admin.git /vagrant/dev/admin
 git clone git@bfadmin:IDEXX/beefree-admin.git /vagrant/dev/bfadmin
 git clone git@core:IDEXX/beefree-src.git /vagrant/dev/core
@@ -146,10 +145,13 @@ docker run -d -p 8083:80 -t \
 
 # get sauce connect and setup tunnel
 curl -s https://saucelabs.com/downloads/sc-4.4.12-linux.tar.gz | tar zxv
-ulimit -n 8192 && ./sc-4.4.12-linux/bin/sc -u idexx_saas_pims -k 85a0270e-7a4a-4c61-991d-e8cf47519c13 &
+chmod 755 /root/sc-4.4.12-linux
+chmod 755 /root/sc-4.4.12-linux/bin
+ulimit -n 8192 && daemon -- /root/sc-4.4.12-linux/bin/sc -v -u idexx_saas_pims -k 85a0270e-7a4a-4c61-991d-e8cf47519c13
+
 
 # run test
-docker run -it --network=host \
+docker run -d --network=host \
 	-e NEO_ENV=local \
 	-e "TEST_MODE=$testMode" \
 	-e "BROWSER=$browser" \
@@ -161,4 +163,5 @@ docker run -it --network=host \
 	--add-host=memcache.idexxneolocal.com:$ip \
 	-v /vagrant/dev/core/application/config/.env:/srv/www/neo/current/application/config/.env \
 	840394902108.dkr.ecr.us-east-1.amazonaws.com/neo-core-smoketest:$coreVer
+
 # end

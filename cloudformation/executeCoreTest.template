@@ -88,15 +88,6 @@
     "ec2Instance": {
       "Type" : "AWS::EC2::Instance",
       "Properties" : {
-        "BlockDeviceMappings" : [
-          {
-            "DeviceName" : "/dev/xvda",
-            "Ebs" : {
-              "VolumeSize" : "30",
-              "VolumeType" : "gp2"
-            }
-          }
-        ],
         "CreditSpecification" : {
           "CPUCredits" : "unlimited"
         },
@@ -104,7 +95,7 @@
         "ImageId" : "ami-fb32279b",
         "InstanceType" : "t2.medium",
         "KeyName" : "DevopsNeo",
-        "SecurityGroupIds" : [ { "Fn::GetAtt": [ "securityGroup", "GroupId" ] } ],
+        "SecurityGroupIds" : [ "sg-9a524fe3" ],
         "SubnetId" : "subnet-2e42ba76",
         "Tags" : [
           {
@@ -130,7 +121,12 @@
                 "export suite=", { "Ref": "suite" }, "\n",
                 "export testPlanid=", { "Ref": "testPlanid" }, "\n",
 
-                "aws s3api get-object --bucket idexxneo-devops-us-east-1 --key automation-testing/executeCoreTests.sh --region us-east-1 executeCoreTests.sh ${coreVer} ${adminVer} ${testMode} ${browser} ${suite} ${testPlanid}\n"
+                "apt-get update && apt-get install awscli -y\n",
+
+                "aws s3api get-object --bucket idexxneo-devops-us-east-1 --key automation-testing/executeCoreTests.sh --region us-east-1 /root/executeCoreTests.sh\n",
+                "chmod +x /root/executeCoreTests.sh\n",
+                "pushd /root\n",
+                "./executeCoreTests.sh ${coreVer} ${adminVer} ${testMode} ${browser} ${suite} ${testPlanid}\n"
               ]
             ]
           }
