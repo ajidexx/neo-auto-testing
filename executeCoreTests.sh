@@ -168,7 +168,7 @@ docker run -d --name core-test --network=host \
 # check if smoketest container is still running
 containerStat=$(docker ps -a --filter name=core-test --filter=status=running |grep -v CONTAINER)
 
-while [ !-z  "$containerStat" ]; do
+while [ ! -z "$containerStat" ]; do
     docker ps -a --filter name=core-test --filter=status=running |grep -v CONTAINER
     sleep 5
 done
