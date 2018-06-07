@@ -40,7 +40,7 @@
     "securityGroup": {
       "Type" : "AWS::EC2::SecurityGroup",
       "Properties" : {
-        "GroupName" : "qa-auto-testing",
+        "GroupName" : { "Fn::Join": [ "", [ "qa-auto-testing", {"Ref": "AWS::StackName"} ] ] }
         "GroupDescription" : "SG allowing SSH ingress to testing instance",
         "SecurityGroupIngress" : {
           "CidrIp": "172.0.0.0/6",
