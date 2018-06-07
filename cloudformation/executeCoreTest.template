@@ -40,7 +40,7 @@
     "securityGroup": {
       "Type" : "AWS::EC2::SecurityGroup",
       "Properties" : {
-        "GroupName" : { "Fn::Join": [ "", [ "qa-auto-testing", {"Ref": "AWS::StackName"} ] ] }
+        "GroupName" : { "Fn::Join": [ "", [ "qa-auto-testing", {"Ref": "AWS::StackName"} ] ] },
         "GroupDescription" : "SG allowing SSH ingress to testing instance",
         "SecurityGroupIngress" : {
           "CidrIp": "172.0.0.0/6",
@@ -120,6 +120,7 @@
                 "export browser=", { "Ref": "browser" }, "\n",
                 "export suite=", { "Ref": "suite" }, "\n",
                 "export testPlanid=", { "Ref": "testPlanid" }, "\n",
+                "export stackName=", {"Ref": "AWS::StackName"}, "\n",
 
                 "apt-get update && apt-get install awscli -y\n",
 
