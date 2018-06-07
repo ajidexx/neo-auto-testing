@@ -7,6 +7,7 @@ testMode=$3
 browser=$4
 suite=$5
 testPlanId=$6
+stackName=$7
 
 # grab awscli
 curl -O https://bootstrap.pypa.io/get-pip.py
@@ -151,7 +152,7 @@ ulimit -n 8192 && daemon -- /root/sc-4.4.12-linux/bin/sc -v -u idexx_saas_pims -
 
 
 # run test
-docker run -d --network=host \
+docker run -d --name core-test --network=host \
 	-e NEO_ENV=local \
 	-e "TEST_MODE=$testMode" \
 	-e "BROWSER=$browser" \
@@ -163,5 +164,16 @@ docker run -d --network=host \
 	--add-host=memcache.idexxneolocal.com:$ip \
 	-v /vagrant/dev/core/application/config/.env:/srv/www/neo/current/application/config/.env \
 	840394902108.dkr.ecr.us-east-1.amazonaws.com/neo-core-smoketest:$coreVer
+
+# check if smoketest container is still running
+containerStat=$(docker ps -a --filter name=core-test --filter=status=running |grep -v CONTAINER)
+
+while [ !-z  "$containerStat" ]; do
+    docker ps -a --filter name=core-test --filter=status=running |grep -v CONTAINER
+    sleep 5
+done
+
+# delete stack when finished
+aws cloudformation delete-stack --stack-name $stackName --region us-west-1
 
 # end
