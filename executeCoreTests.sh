@@ -163,7 +163,6 @@ docker run -d --name core-test --network=host \
 	--add-host=core.idexxneolocal.com:$ip \
 	--add-host=memcache.idexxneolocal.com:$ip \
 	-v /vagrant/dev/core/application/config/.env:/srv/www/neo/current/application/config/.env \
-	-–log-driver syslog –-log-opt syslog-address=tcp+tls://logs.papertrailapp.com:37569 --log-opt syslog-format=rfc5424 --log-opt tag=core-test-automation \
 	840394902108.dkr.ecr.us-east-1.amazonaws.com/neo-core-smoketest:$coreVer
 
 # check if smoketest container is still running
