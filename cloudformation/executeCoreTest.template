@@ -74,7 +74,7 @@
           } ]
         },
         "ManagedPolicyArns": [ "arn:aws:iam::aws:policy/AdministratorAccess" ],
-        "RoleName": "neo-auto-testing-role"
+        "RoleName": { "Fn::Join": [ "", [ "auto-testing-", {"Ref": "AWS::StackName"} ] ] }
       }
     },
     "instanceProfile": {
