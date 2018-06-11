@@ -138,6 +138,12 @@
   "Outputs": {
     "coreAutomationIP": {
       "Description": "EC2 Instance IP Address",
-      "Value": { "Fn::GetAtt" : [ "ec2Instance", "PrivateIp" ]}
+      "Value": {
+        "Fn::GetAtt": [
+          "ec2Instance",
+          "PrivateIp"
+        ]
+      }
     }
+  }
 }
