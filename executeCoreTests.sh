@@ -153,7 +153,7 @@ ulimit -n 8192 && daemon -- /root/sc-4.4.12-linux/bin/sc -v -u idexx_saas_pims -
 
 # run test
 docker run -d --name core-test --network=host \
-    -–log-driver syslog –-log-opt syslog-address=tcp+tls://logs.papertrailapp.com:37569 \
+    --log-driver syslog --log-opt syslog-address=tcp+tls://logs.papertrailapp.com:37569 --log-opt syslog-format=rfc5424 --log-opt tag=core-test-automation \
 	-e NEO_ENV=local \
 	-e "TEST_MODE=$testMode" \
 	-e "BROWSER=$browser" \
