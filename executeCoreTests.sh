@@ -148,8 +148,11 @@ docker run -d -p 8083:80 -t \
 curl -s https://saucelabs.com/downloads/sc-4.4.12-linux.tar.gz | tar zxv
 chmod 755 /root/sc-4.4.12-linux
 chmod 755 /root/sc-4.4.12-linux/bin
-ulimit -n 8192 && daemon -- /root/sc-4.4.12-linux/bin/sc -v -u idexx_saas_pims -k 85a0270e-7a4a-4c61-991d-e8cf47519c13 -i coreAuto-$(date +"%T")
+tunnelName=coreAuto-$(date +"%T")
+ulimit -n 8192 && daemon -- /root/sc-4.4.12-linux/bin/sc -v -u idexx_saas_pims -k 85a0270e-7a4a-4c61-991d-e8cf47519c13 -i $tunnelName
 
+# add saucelabs tunnel identifier to env file
+echo SAUCE_TUNNEL_ID=$tunnelName >> /vagrant/dev/core/application/config/.env
 
 # run test
 docker run -d --name core-test --network=host \
