@@ -151,9 +151,11 @@ docker run -d -p 8083:80 -t \
 	--name core-app 840394902108.dkr.ecr.us-east-1.amazonaws.com/neo-core-app:$coreVer
 
 # get sauce connect and setup tunnel
+pushd /root
 curl -s https://saucelabs.com/downloads/sc-4.4.12-linux.tar.gz | tar zxv
-chmod 755 sc-4.4.12-linux
-chmod 755 sc-4.4.12-linux/bin
+sleep 1
+chmod 755 /root/sc-4.4.12-linux
+chmod 755 /root/sc-4.4.12-linux/bin
 tunnelName=coreAuto-$(date +"%T")
 ulimit -n 8192 && daemon -- /root/sc-4.4.12-linux/bin/sc -v -u idexx_saas_pims -k 85a0270e-7a4a-4c61-991d-e8cf47519c13 -i $tunnelName
 
