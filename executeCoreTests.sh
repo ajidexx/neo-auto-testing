@@ -59,12 +59,14 @@ EOF
 apt-get install git docker.io daemon -y
 ssh-keyscan -H github.com >> ~/.ssh/known_hosts
 
-git clone git@neo-local:IDEXX/neo-local.git -b $branchName --single-branch /vagrant
-git clone git@admin:IDEXX/saas-admin.git -b $branchName --single-branch /vagrant/dev/admin
-git clone git@bfadmin:IDEXX/beefree-admin.git -b $branchName --single-branch /vagrant/dev/bfadmin
-git clone git@core:IDEXX/beefree-src.git -b $branchName --single-branch /vagrant/dev/core
-git clone git@onboarding:IDEXX/saas-onboarding.git -b $branchName --single-branch /vagrant/dev/onboarding
-git clone git@reporting:IDEXX/saas-reporting-server.git -b $branchName --single-branch /vagrant/dev/reporting
+git clone git@neo-local:IDEXX/neo-local.git /vagrant
+git clone git@admin:IDEXX/saas-admin.git /vagrant/dev/admin
+git clone git@bfadmin:IDEXX/beefree-admin.git /vagrant/dev/bfadmin
+git clone git@core:IDEXX/beefree-src.git /vagrant/dev/core
+git clone git@onboarding:IDEXX/saas-onboarding.git /vagrant/dev/onboarding
+git clone git@reporting:IDEXX/saas-reporting-server.git /vagrant/dev/reporting
+
+cd /vagrant/dev/core && git checkout $branchName
 
 
 
