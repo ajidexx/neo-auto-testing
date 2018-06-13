@@ -31,6 +31,10 @@
       "Default": "W235",
       "Type": "String"
     },
+    "branchName": {
+      "Default": "master",
+      "Type": "String"
+    },
     "purpose": {
       "Default": "neo",
       "Type": "String"
@@ -121,6 +125,7 @@
                 "export suite=", { "Ref": "suite" }, "\n",
                 "export testPlanid=", { "Ref": "testPlanid" }, "\n",
                 "export stackName=", {"Ref": "AWS::StackName"}, "\n",
+                "export branchName=", {"Ref": "branchName"}, "\n",
 
                 "apt-get update && apt-get install awscli -y\n",
 

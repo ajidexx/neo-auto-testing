@@ -8,6 +8,7 @@ browser=$4
 suite=$5
 testPlanId=$6
 stackName=$7
+branchName=$8
 
 # grab awscli
 curl -O https://bootstrap.pypa.io/get-pip.py
@@ -58,12 +59,12 @@ EOF
 apt-get install git docker.io daemon -y
 ssh-keyscan -H github.com >> ~/.ssh/known_hosts
 
-git clone git@neo-local:IDEXX/neo-local.git /vagrant
-git clone git@admin:IDEXX/saas-admin.git /vagrant/dev/admin
-git clone git@bfadmin:IDEXX/beefree-admin.git /vagrant/dev/bfadmin
-git clone git@core:IDEXX/beefree-src.git /vagrant/dev/core
-git clone git@onboarding:IDEXX/saas-onboarding.git /vagrant/dev/onboarding
-git clone git@reporting:IDEXX/saas-reporting-server.git /vagrant/dev/reporting
+git clone -b $branchName git@neo-local:IDEXX/neo-local.git /vagrant
+git clone -b $branchName git@admin:IDEXX/saas-admin.git /vagrant/dev/admin
+git clone -b $branchName git@bfadmin:IDEXX/beefree-admin.git /vagrant/dev/bfadmin
+git clone -b $branchName git@core:IDEXX/beefree-src.git /vagrant/dev/core
+git clone -b $branchName git@onboarding:IDEXX/saas-onboarding.git /vagrant/dev/onboarding
+git clone -b $branchName git@reporting:IDEXX/saas-reporting-server.git /vagrant/dev/reporting
 
 # get ec2 ip
 ip=$(ec2metadata | awk '/local-ipv4/ {print $2}')
