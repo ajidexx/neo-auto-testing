@@ -152,8 +152,8 @@ tunnelName=coreAuto-$(date +"%T")
 ulimit -n 8192 && daemon -- /root/sc-4.4.12-linux/bin/sc -v -u idexx_saas_pims -k 85a0270e-7a4a-4c61-991d-e8cf47519c13 -i $tunnelName
 
 # add saucelabs tunnel identifier to env file
-echo SAUCE_TUNNEL_ID=$tunnelName >> /vagrant/dev/core/application/config/.env
-echo SAUCE_TUNNEL_ID=$tunnelName >> /vagrant/dev/core/tests/acceptance/config/.env
+echo SAUCE_TUNNEL_ID=$tunnelName >> /vagrant/dev/core/application/config/.env.example
+echo SAUCE_TUNNEL_ID=$tunnelName >> /vagrant/dev/core/tests/acceptance/config/.env.example
 
 # run test
 docker run -d --name core-test --network=host \
@@ -168,7 +168,6 @@ docker run -d --name core-test --network=host \
 	--add-host=core.idexxneolocal.com:$ip \
 	--add-host=memcache.idexxneolocal.com:$ip \
 	-v /vagrant/dev/core/application/config/.env:/srv/www/neo/current/application/config/.env \
-	-v /vagrant/dev/core/tests/acceptance/config/.env:/srv/www/neo/current/tests/acceptance/config/.env \
 	840394902108.dkr.ecr.us-east-1.amazonaws.com/neo-core-smoketest:$coreVer
 
 # check if smoketest container is still running
