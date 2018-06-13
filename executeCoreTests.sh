@@ -156,6 +156,8 @@ echo SAUCE_TUNNEL_ID=$tunnelName >> /vagrant/dev/core/application/config/.env.ex
 #echo SAUCE_TUNNEL_ID=$tunnelName >> /vagrant/dev/core/tests/acceptance/config/.env.example
 sed -i -e "s/SAUCE_TUNNEL_ID=/SAUCE_TUNNEL_ID=$tunnelName/" /vagrant/dev/core/tests/acceptance/config/.env.example
 
+cat /vagrant/dev/core/tests/acceptance/config/.env.example
+
 # run test
 docker run -d --name core-test --network=host \
     --log-driver syslog --log-opt syslog-address=tcp+tls://logs.papertrailapp.com:37569 --log-opt syslog-format=rfc5424 --log-opt tag=core-test-automation \
