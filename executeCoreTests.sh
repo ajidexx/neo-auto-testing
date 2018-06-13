@@ -171,6 +171,7 @@ docker run -d --name core-test --network=host \
 	--add-host=core.idexxneolocal.com:$ip \
 	--add-host=memcache.idexxneolocal.com:$ip \
 	-v /vagrant/dev/core/application/config/.env:/srv/www/neo/current/application/config/.env \
+	-v /vagrant/dev/core/tests/acceptance/config/.env.example:/srv/www/neo/current/tests/acceptance/config/.env \
 	840394902108.dkr.ecr.us-east-1.amazonaws.com/neo-core-smoketest:$coreVer
 
 # check if smoketest container is still running
