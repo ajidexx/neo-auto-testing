@@ -132,7 +132,7 @@
                 "aws s3api get-object --bucket idexxneo-devops-us-east-1 --key automation-testing/executeCoreTests.sh --region us-east-1 /root/executeCoreTests.sh\n",
                 "chmod +x /root/executeCoreTests.sh\n",
                 "pushd /root\n",
-                "./executeCoreTests.sh ${coreVer} ${adminVer} ${testMode} ${browser} ${suite} ${testPlanid} ${stackName}\n"
+                "./executeCoreTests.sh ${coreVer} ${adminVer} ${testMode} ${browser} ${suite} ${testPlanid} ${stackName} ${branchName}\n"
               ]
             ]
           }
