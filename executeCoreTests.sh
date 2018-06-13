@@ -66,6 +66,7 @@ git clone git@core:IDEXX/beefree-src.git /vagrant/dev/core
 git clone git@onboarding:IDEXX/saas-onboarding.git /vagrant/dev/onboarding
 git clone git@reporting:IDEXX/saas-reporting-server.git /vagrant/dev/reporting
 
+echo $branchName
 cd /vagrant/dev/core && git checkout $branchName
 
 
