@@ -153,7 +153,8 @@ ulimit -n 8192 && daemon -- /root/sc-4.4.12-linux/bin/sc -v -u idexx_saas_pims -
 
 # add saucelabs tunnel identifier to env file
 echo SAUCE_TUNNEL_ID=$tunnelName >> /vagrant/dev/core/application/config/.env.example
-echo SAUCE_TUNNEL_ID=$tunnelName >> /vagrant/dev/core/tests/acceptance/config/.env.example
+#echo SAUCE_TUNNEL_ID=$tunnelName >> /vagrant/dev/core/tests/acceptance/config/.env.example
+sed -i -e "s/SAUCE_TUNNEL_ID=/SAUCE_TUNNEL_ID=$tunnelName/" /vagrant/dev/core/tests/acceptance/config/.env.example
 
 # run test
 docker run -d --name core-test --network=host \
