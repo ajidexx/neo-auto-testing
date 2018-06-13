@@ -179,6 +179,6 @@ while [ ! -z "$containerStat" ]; do
 done
 
 # delete stack when finished
-#aws cloudformation delete-stack --stack-name $stackName --region us-west-1
+aws cloudformation delete-stack --stack-name $stackName --region us-west-1
 
 # end
