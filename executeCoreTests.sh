@@ -11,10 +11,14 @@ stackName=$7
 branchName=$8
 
 # grab awscli
-curl -O https://bootstrap.pypa.io/get-pip.py
-python3 get-pip.py
+#curl -O https://bootstrap.pypa.io/get-pip.py
+#python3 get-pip.py
 #pip install urllib3
-pip install awscli
+#pip install awscli --upgrade
+
+curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
+unzip awscli-bundle.zip
+sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
 
 # setup ssh for git by looping through ec2 parameter stores
 for paramStore in qa-auto-neolocal qa-auto-admin qa-auto-bfadmin qa-auto-core qa-auto-onboarding qa-auto-reporting; do
