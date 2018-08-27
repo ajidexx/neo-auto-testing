@@ -14,7 +14,7 @@ branchName=$8
 curl -O https://bootstrap.pypa.io/get-pip.py
 python3 get-pip.py
 #pip install urllib3
-pip install awscli --upgrade
+pip install awscli
 
 # setup ssh for git by looping through ec2 parameter stores
 for paramStore in qa-auto-neolocal qa-auto-admin qa-auto-bfadmin qa-auto-core qa-auto-onboarding qa-auto-reporting; do
