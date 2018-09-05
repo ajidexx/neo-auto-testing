@@ -178,6 +178,7 @@ docker run -d --name core-test --network=host \
 	-e "BROWSER=$browser" \
 	-e "SUITE=$suite" \
 	-e "TEST_PLAN_ID=$testPlanId" \
+	-e "BRANCH_NAME=$branchName" \
 	--add-host=db.idexxneolocal.com:$ip \
 	--add-host=admin.idexxneolocal.com:$ip \
 	--add-host=core.idexxneolocal.com:$ip \
